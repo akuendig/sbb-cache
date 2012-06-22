@@ -21,9 +21,9 @@ func init() {
 }
 
 type cachedLocation struct {
-	X, Y    int
-	Query   string
-	Tpe     string
+	X, Y    int    "/c"
+	Query   string "/c"
+	Tpe     string "/c"
 	Json    string
 	Expires time.Time
 }
