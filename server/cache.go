@@ -45,7 +45,7 @@ func GetCached(query url.Values) (string, error) {
 	}
 
 	var result = &cachedLocation{}
-	err := session.DB("heroku_app5462032").C("locations").Find(q).Sort("-$natural").One(&result)
+	err := session.DB("heroku_app5462032").C("locations").Find(q).Sort("-expires").One(&result)
 
 	if err != nil {
 		return "", err
