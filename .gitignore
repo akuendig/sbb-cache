@@ -21,5 +21,7 @@ _testmain.go
 
 *.exe
 
+*.env
+
 *.sublime-project
 *.sublime-workspace
