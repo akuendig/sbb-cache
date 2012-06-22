@@ -9,8 +9,8 @@ import (
 )
 
 func main() {
-	http.HandleFunc("/", hello)
 	http.HandleFunc("/location", location)
+	http.HandleFunc("/", hello)
 
 	err := http.ListenAndServe(":"+os.Getenv("PORT"), nil)
 
