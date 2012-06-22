@@ -6,7 +6,6 @@ import (
 	"net/url"
 	"os"
 	"strconv"
-	"time"
 )
 
 var session *mgo.Session
@@ -21,11 +20,10 @@ func init() {
 }
 
 type cachedLocation struct {
-	X, Y    int    ",omitempty"
-	Query   string ",omitempty"
-	Tpe     string ",omitempty"
-	Json    string
-	Expires time.Time
+	X, Y  int    ",omitempty"
+	Query string ",omitempty"
+	Tpe   string ",omitempty"
+	Json  string
 }
 
 func GetCached(query url.Values) (string, error) {
@@ -45,21 +43,16 @@ func GetCached(query url.Values) (string, error) {
 	}
 
 	var result = &cachedLocation{}
-	err := session.DB("heroku_app5462032").C("locations").Find(q).Sort("-expires").One(&result)
+	err := session.DB("heroku_app5462032").C("locations").Find(q).One(&result)
 
 	if err != nil {
 		return "", err
-	}
-
-	if result.Expires.Before(time.Now()) {
-		return "", nil
 	}
 
 	return result.Json, nil
 }
 
 func SetCached(loc *cachedLocation) error {
-	loc.Expires = time.Now().Add(time.Minute)
 	return session.DB("heroku_app5462032").C("locations").Insert(loc)
 }
 
