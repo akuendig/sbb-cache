@@ -36,7 +36,7 @@ func location(w http.ResponseWriter, req *http.Request) {
 		}
 
 		var loc = NewLocation(query)
-		loc.json = json
+		loc.Json = json
 
 		SetCached(loc)
 

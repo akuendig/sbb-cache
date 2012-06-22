@@ -21,11 +21,11 @@ func init() {
 }
 
 type cachedLocation struct {
-	x, y    int
-	query   string
-	tpe     string
-	json    string
-	expires time.Time
+	X, Y    int
+	Query   string
+	Tpe     string
+	Json    string
+	Expires time.Time
 }
 
 func GetCached(query url.Values) (string, error) {
@@ -51,15 +51,15 @@ func GetCached(query url.Values) (string, error) {
 		return "", err
 	}
 
-	if result.expires.Before(time.Now()) {
+	if result.Expires.Before(time.Now()) {
 		return "", nil
 	}
 
-	return result.json, nil
+	return result.Json, nil
 }
 
 func SetCached(loc *cachedLocation) error {
-	loc.expires = time.Now().Add(time.Minute)
+	loc.Expires = time.Now().Add(time.Minute)
 	return session.DB("heroku_app5462032").C("locations").Insert(loc)
 }
 
@@ -67,19 +67,19 @@ func NewLocation(query url.Values) *cachedLocation {
 	var loc = &cachedLocation{}
 
 	if val := query["query"]; len(val) > 0 {
-		loc.query = val[0]
+		loc.Query = val[0]
 	}
 
 	var x = query["x"]
 	var y = query["y"]
 
 	if len(x) > 0 && len(y) > 0 {
-		loc.x, _ = strconv.Atoi(x[0])
-		loc.y, _ = strconv.Atoi(y[0])
+		loc.X, _ = strconv.Atoi(x[0])
+		loc.Y, _ = strconv.Atoi(y[0])
 	}
 
 	if t := query["type"]; len(t) > 0 {
-		loc.tpe = t[0]
+		loc.Tpe = t[0]
 	}
 
 	return loc
