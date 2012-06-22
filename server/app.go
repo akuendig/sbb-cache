@@ -10,7 +10,6 @@ import (
 
 func main() {
 	http.HandleFunc("/location", location)
-	http.HandleFunc("/", hello)
 
 	err := http.ListenAndServe(":"+os.Getenv("PORT"), nil)
 
@@ -46,6 +45,6 @@ func location(w http.ResponseWriter, req *http.Request) {
 
 func hello(w http.ResponseWriter, req *http.Request) {
 	fmt.Fprintln(w, `
-		The only service endpoint is /location.
-		Refer to <a href='http://transport.opendata.ch/#locations'>TransportAPI</a> for more information.`)
+The only service endpoint is /location.
+Refer to <a href='http://transport.opendata.ch/#locations'>TransportAPI</a> for more information.`)
 }
