@@ -41,6 +41,8 @@ func location(w http.ResponseWriter, req *http.Request) {
 		SetCached(loc)
 
 		io.WriteString(w, json)
+	} else {
+		io.WriteString(w, json)
 	}
 }
 
