@@ -29,7 +29,7 @@ type cachedLocation struct {
 }
 
 func GetCached(query url.Values) (string, error) {
-	var q map[string]interface{}
+	var q = make(map[string]interface{})
 
 	if val := query.Get("query"); len(val) > 0 {
 		q["query"] = val[0]
