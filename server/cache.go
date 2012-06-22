@@ -1,7 +1,7 @@
 package main
 
 import (
-	"launchpad.net/mgo"
+	"labix.org/v2/mgo"
 	"log"
 	"net/url"
 	"os"
