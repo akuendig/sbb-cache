@@ -32,16 +32,16 @@ func GetCached(query url.Values) (string, error) {
 	var q = make(map[string]interface{})
 
 	if val := query.Get("query"); len(val) > 0 {
-		q["query"] = val[0]
+		q["query"] = val
 	}
 
 	if x, y := query.Get("x"), query.Get("y"); len(x) > 0 && len(y) > 0 {
-		q["x"] = x[0]
-		q["y"] = y[0]
+		q["x"] = x
+		q["y"] = y
 	}
 
 	if t := query.Get("type"); len(t) > 0 {
-		q["tpe"] = t[0]
+		q["tpe"] = t
 	}
 
 	var result = &cachedLocation{}
@@ -66,20 +66,17 @@ func SetCached(loc *cachedLocation) error {
 func NewLocation(query url.Values) *cachedLocation {
 	var loc = &cachedLocation{}
 
-	if val := query["query"]; len(val) > 0 {
-		loc.Query = val[0]
+	if val := query.Get("query"); len(val) > 0 {
+		loc.Query = val
 	}
 
-	var x = query["x"]
-	var y = query["y"]
-
-	if len(x) > 0 && len(y) > 0 {
-		loc.X, _ = strconv.Atoi(x[0])
-		loc.Y, _ = strconv.Atoi(y[0])
+	if x, y := query.Get("x"), query.Get("y"); len(x) > 0 && len(y) > 0 {
+		loc.X, _ = strconv.Atoi(x)
+		loc.Y, _ = strconv.Atoi(y)
 	}
 
-	if t := query["type"]; len(t) > 0 {
-		loc.Tpe = t[0]
+	if t := query.Get("type"); len(t) > 0 {
+		loc.Tpe = t
 	}
 
 	return loc

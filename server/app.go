@@ -25,7 +25,7 @@ func location(w http.ResponseWriter, req *http.Request) {
 	json, err := GetCached(query)
 
 	if err != nil {
-		http.Error(w, "", http.StatusInternalServerError)
+		http.Error(w, err.Error(), http.StatusInternalServerError)
 	}
 
 	if json == "" {
