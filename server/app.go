@@ -40,18 +40,13 @@ func location(w http.ResponseWriter, req *http.Request) {
 
 		SetCached(loc)
 
-		log.Println("Sending queried:")
-		log.Println(json)
 		io.WriteString(w, json)
 	} else {
-		log.Println("Sending cached:")
-		log.Println(json)
 		io.WriteString(w, json)
 	}
 }
 
 func hello(w http.ResponseWriter, req *http.Request) {
-	fmt.Fprintln(w, `
-The only service endpoint is /location.
+	fmt.Fprintln(w, `The only service endpoint is /location.
 Refer to <a href='http://transport.opendata.ch/#locations'>TransportAPI</a> for more information.`)
 }
