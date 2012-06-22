@@ -40,8 +40,12 @@ func location(w http.ResponseWriter, req *http.Request) {
 
 		SetCached(loc)
 
+		log.Println("Sending queried:")
+		log.Println(json)
 		io.WriteString(w, json)
 	} else {
+		log.Println("Sending cached:")
+		log.Println(json)
 		io.WriteString(w, json)
 	}
 }
