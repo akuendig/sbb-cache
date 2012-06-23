@@ -3,6 +3,7 @@ package main
 import (
 	"fmt"
 	"io"
+	"labix.org/v2/mgo"
 	"log"
 	"net/http"
 	"os"
@@ -21,20 +22,17 @@ func main() {
 
 func location(w http.ResponseWriter, req *http.Request) {
 	var query = req.URL.Query()
+	var json, err = GetCached(query)
 
-	json, err := GetCached(query)
+	switch err {
+	case nil:
+		io.WriteString(w, json)
 
-	if err != nil {
-		log.Println("GetCached:", err.Error())
-		http.Error(w, "", http.StatusInternalServerError)
-		return
-	}
-
-	if json == "" {
+	case mgo.ErrNotFound:
 		json, err = QueryLocations(query)
 
 		if err != nil {
-			log.Println("QueryLocations:", err.Error())
+			log.Println("QueryLocations:", err)
 			http.Error(w, "", http.StatusInternalServerError)
 			return
 		}
@@ -45,8 +43,10 @@ func location(w http.ResponseWriter, req *http.Request) {
 		SetCached(loc)
 
 		io.WriteString(w, json)
-	} else {
-		io.WriteString(w, json)
+
+	default:
+		log.Println("GetCached:", err)
+		http.Error(w, "", http.StatusInternalServerError)
 	}
 }
 
