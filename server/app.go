@@ -25,7 +25,8 @@ func location(w http.ResponseWriter, req *http.Request) {
 	json, err := GetCached(query)
 
 	if err != nil {
-		http.Error(w, err.Error(), http.StatusInternalServerError)
+		log.Println(err)
+		http.Error(w, "", http.StatusInternalServerError)
 		return
 	}
 
@@ -33,6 +34,7 @@ func location(w http.ResponseWriter, req *http.Request) {
 		json, err = QueryLocations(query)
 
 		if err != nil {
+			log.Println(err)
 			http.Error(w, "", http.StatusInternalServerError)
 			return
 		}
