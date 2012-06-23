@@ -17,6 +17,8 @@ func init() {
 	if err != nil {
 		log.Fatal(err)
 	}
+
+	ensureCollection()
 }
 
 type cachedLocation struct {
@@ -73,4 +75,74 @@ func NewLocation(query url.Values) *cachedLocation {
 	}
 
 	return loc
+}
+
+func ensureCollection() {
+	var db = session.DB("heroku_app5462032")
+	var col = db.C("locations")
+	var cols, err = db.CollectionNames()
+	var colExists = false
+
+	if err != nil {
+		log.Fatal(err)
+	}
+
+	for _, name := range cols {
+		if name == "locations" {
+			colExists = true
+			break
+		}
+	}
+
+	if !colExists {
+		err = col.Create(&mgo.CollectionInfo{
+			DisableIdIndex: false,
+			Capped:         true,
+			MaxBytes:       60 * 1024 * 1024,
+		})
+
+		if err != nil {
+			log.Fatal(err)
+		}
+	}
+
+	err = col.EnsureIndex(mgo.Index{
+		Key:        []string{"x"},
+		Background: true, // Allow other connections to use a not fully build index
+		Sparse:     true,
+	})
+
+	if err != nil {
+		log.Fatal(err)
+	}
+
+	err = col.EnsureIndex(mgo.Index{
+		Key:        []string{"y"},
+		Background: true, // Allow other connections to use a not fully build index
+		Sparse:     true,
+	})
+
+	if err != nil {
+		log.Fatal(err)
+	}
+
+	err = col.EnsureIndex(mgo.Index{
+		Key:        []string{"query"},
+		Background: true, // Allow other connections to use a not fully build index
+		Sparse:     true,
+	})
+
+	if err != nil {
+		log.Fatal(err)
+	}
+
+	err = col.EnsureIndex(mgo.Index{
+		Key:        []string{"tpe"},
+		Background: true, // Allow other connections to use a not fully build index
+		Sparse:     true,
+	})
+
+	if err != nil {
+		log.Fatal(err)
+	}
 }

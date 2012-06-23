@@ -26,6 +26,7 @@ func location(w http.ResponseWriter, req *http.Request) {
 
 	if err != nil {
 		http.Error(w, err.Error(), http.StatusInternalServerError)
+		return
 	}
 
 	if json == "" {
@@ -33,6 +34,7 @@ func location(w http.ResponseWriter, req *http.Request) {
 
 		if err != nil {
 			http.Error(w, "", http.StatusInternalServerError)
+			return
 		}
 
 		var loc = NewLocation(query)
