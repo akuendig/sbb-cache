@@ -6,14 +6,14 @@ import (
 	"labix.org/v2/mgo"
 	"log"
 	"net/http"
-	"os"
 )
 
 func main() {
-	http.HandleFunc("/", hello)
+	http.HandleFunc("/", locationAlternative)
 	http.HandleFunc("/location", location)
 
-	err := http.ListenAndServe(":"+os.Getenv("PORT"), nil)
+	err := http.ListenAndServe(":9000", nil)
+	//err := http.ListenAndServe(":"+os.Getenv("PORT"), nil)
 
 	if err != nil {
 		log.Fatal("ListenAndServe:", err)
@@ -47,6 +47,17 @@ func location(w http.ResponseWriter, req *http.Request) {
 	default:
 		log.Println("GetCached:", err)
 		http.Error(w, "", http.StatusInternalServerError)
+	}
+}
+
+func locationAlternative(w http.ResponseWriter, req *http.Request) {
+	var query = req.URL.Query()
+	var q, err = NewLocationQuery(query.Get("s"))
+
+	if err != nil {
+		http.Error(w, err.Error(), http.StatusInternalServerError)
+	} else {
+		fmt.Fprint(w, q)
 	}
 }
 

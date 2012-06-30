@@ -11,11 +11,13 @@ import (
 var session *mgo.Session
 
 func init() {
+	return
 	var err error
 	session, err = mgo.Dial(os.Getenv("MONGOLAB_URI"))
 
 	if err != nil {
-		log.Fatal(err)
+		log.Println("Mongodb:", err)
+		return
 	}
 
 	ensureCollection()
