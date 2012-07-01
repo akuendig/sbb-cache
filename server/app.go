@@ -6,6 +6,7 @@ import (
 	"labix.org/v2/mgo"
 	"log"
 	"net/http"
+	"./service"
 )
 
 func main() {
@@ -52,12 +53,12 @@ func location(w http.ResponseWriter, req *http.Request) {
 
 func locationAlternative(w http.ResponseWriter, req *http.Request) {
 	var query = req.URL.Query()
-	var q, err = NewLocationQuery(query.Get("s"))
+	var q, err = service.NewStationBoardQuery(query.Get("s"))
 
 	if err != nil {
 		http.Error(w, err.Error(), http.StatusInternalServerError)
 	} else {
-		fmt.Fprint(w, q)
+		fmt.Fprintf(w, "%+v", q)
 	}
 }
 
